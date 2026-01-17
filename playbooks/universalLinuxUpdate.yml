@@ -2,8 +2,6 @@
 - name: Update any Linux machine
   hosts: linuxVMs
   become: true
-  roles:
-    - linux
 
   tasks:
     # Debian / Ubuntu / Kali / Mint
