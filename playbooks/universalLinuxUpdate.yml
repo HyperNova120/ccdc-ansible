@@ -34,13 +34,13 @@
         - [dnf-based updates]
 
     # SUSE / openSUSE
-    - name: Update Zypper-based systems
-      ansible.builtin.zypper:
-        name: "*"
-        state: latest
-      when: ansible_pkg_mgr == "zypper"
-      tags:
-        - [zypper-based updates]
+#    - name: Update Zypper-based systems
+#     ansible.builtin.zypper:
+ #       name: "*"
+#        state: latest
+#      when: ansible_pkg_mgr == "zypper"
+ #     tags:
+ #       - [zypper-based updates]
 
     # Arch Linux / Manjaro / EndeavourOS
     - name: Update Pacman-based systems
