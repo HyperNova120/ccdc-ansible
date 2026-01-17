@@ -1,0 +1,14 @@
+---
+- name: Install Wazuh Agent if not installed
+  hosts: linuxVMs
+  become: true
+
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+
+    - name: Run Wazuh Install if wazuh-agent missing
+      ansible.builtin.script: files/installWazuhAgent.sh <wazuh-manager-ip>
+      when:
+        - "'wazuh-agent' not in ansible_facts.packages"
+        - "'wazuh-manager' not in ansible_facts.packages"

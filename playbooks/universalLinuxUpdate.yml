@@ -1,0 +1,54 @@
+---
+- name: Update any Linux machine
+  hosts: linuxVMs
+  become: true
+  roles:
+    - linux
+
+  tasks:
+    # Debian / Ubuntu / Kali / Mint
+    - name: Update APT-based systems
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+        autoremove: true
+        autoclean: true
+      when: ansible_os_family == "Debian"
+      tags:
+        - [apt-based updates]
+
+    # RHEL / CentOS / Rocky / Alma / Amazon Linux 2
+    - name: Update YUM-based systems
+      ansible.builtin.yum:
+        name: "*"
+        state: latest
+      when: ansible_pkg_mgr == "yum"
+      tags:
+        - [yum-based updates]
+
+    # Fedora / RHEL 8+ / Rocky 8+ / Alma 8+
+    - name: Update DNF-based systems
+      ansible.builtin.dnf:
+        name: "*"
+        state: latest
+      when: ansible_pkg_mgr == "dnf"
+      tags:
+        - [dnf-based updates]
+
+    # SUSE / openSUSE
+    - name: Update Zypper-based systems
+      ansible.builtin.zypper:
+        name: "*"
+        state: latest
+      when: ansible_pkg_mgr == "zypper"
+      tags:
+        - [zypper-based updates]
+
+    # Arch Linux / Manjaro / EndeavourOS
+    - name: Update Pacman-based systems
+      community.general.pacman:
+        update_cache: true
+        upgrade: true
+      when: ansible_pkg_mgr == "pacman"
+      tags:
+        - [pacman-based updates]

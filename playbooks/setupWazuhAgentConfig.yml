@@ -1,0 +1,37 @@
+---
+- name: Configure Wazuh Agent installation
+  hosts: linuxVMs
+  become: true
+
+  tasks:
+
+    - name: Get Facts
+      ansible.builtin.package_facts:
+
+    - name: Ensure jq is installed
+      ansible.builtin.package:
+        name:
+          - jq
+        state: present
+
+    - name: Copy block-ssh to agent
+      ansible.builtin.copy:
+        src:  files/block-ssh.sh
+        dest: /var/ossec/active-response/bin/block-ssh.sh
+        mode: "0750"
+        owner: root
+        group: ossec
+      when:
+        - "'wazuh-manager' not in ansible_facts.packages"
+
+    - name: Run config Script
+      ansible.builtin.script: files/initCustomWazuhAgentConfigs.sh
+      when:
+        - "'wazuh-manager' not in ansible_facts.packages"
+
+    - name: Restart Wazuh-agent
+      ansible.builtin.service:
+        name: wazuh-agent
+        state: restarted
+      when:
+        - "'wazuh-manager' not in ansible_facts.packages"
