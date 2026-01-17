@@ -20,7 +20,7 @@
         dest: /var/ossec/active-response/bin/block-ssh.sh
         mode: "0750"
         owner: root
-        group: ossec
+        group: wazuh
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
 
