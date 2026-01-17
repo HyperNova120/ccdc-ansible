@@ -35,7 +35,7 @@
 
     # SUSE / openSUSE
     - name: Update Zypper-based systems
-     ansible.builtin.zypper:
+      ansible.builtin.zypper:
         name: "*"
         state: latest
       when: ansible_pkg_mgr == "zypper"
