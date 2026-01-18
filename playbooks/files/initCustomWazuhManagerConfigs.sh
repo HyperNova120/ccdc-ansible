@@ -26,12 +26,12 @@ insert_block_after_line() {
   awk -v block="$block" -v search="$search" '
         BEGIN { inserted = 0 }
         {
-            
+            print
             if (!inserted && $0 ~ search) {
                 print block
                 inserted = 1
             }
-            print
+            
         }
     ' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
 }
