@@ -40,4 +40,4 @@
 
     - name: Display script_output
       ansible.builtin.debug:
-        msg: "{{ script_output.stdout }}"
+        msg: "{{ script_output.stdout_lines | default('No output captured')}}"
