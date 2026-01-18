@@ -30,15 +30,14 @@
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
       register: script_output
-        
+
     - name: Restart Wazuh-agent
       ansible.builtin.service:
         name: wazuh-agent
         state: restarted
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
-      
 
     - name: Display script_output
-      debug:
+      dnsible.builtin.debug:
         msg: "{{ script_output.stdout }}"
