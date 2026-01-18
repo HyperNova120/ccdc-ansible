@@ -34,7 +34,9 @@ LOCAL_RULE_BLOCK="  <rule id="100002" level="6">
 "
 LOCAL_RULE_SEARCH="</group>"
 
-CONF_BLOCK="  <command>
+CONF_BLOCK=$(
+  cat <<'EOF'
+  <command>
     <name>block-ssh</name>
     <executable>block-ssh.sh</executable>
     <timeout_allowed>yes</timeout_allowed>
@@ -44,7 +46,8 @@ CONF_BLOCK="  <command>
     <location>local</location>
     <rules_id>100002</rules_id>
   </active-response>
-"
+EOF
+)
 CONF_SEARCH="</ossec_config>"
 
 insert_block_before_line "$LOCAL_RULE_BLOCK" "$LOCAL_RULE_SEARCH" "$LOCAL_RULE_FILE"
