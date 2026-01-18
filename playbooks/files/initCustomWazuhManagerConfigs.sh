@@ -4,6 +4,7 @@ insert_block_before_line() {
   local file="$3"
 
   if awk -v RS="" search="$block" '$0 ~ search {exit 1}' <<<"$file"; then
+    echo "Duplicate config entry found"
     return 1
   fi
 
