@@ -5,19 +5,15 @@ insert_block_before_line() {
   local search="$2"
   local file="$3"
 
-  if awk -v RS="" 'index($0, ENVIRON["CONF_BLOCK"]) {exit 1}' <<<"$file"; then
-    echo "Duplicate config entry found"
-    return 1
-  fi
-
   awk -v block="$block" -v search="$search" '
         BEGIN { inserted = 0 }
         {
+            print
             if (!inserted && $0 ~ search) {
                 print block
                 inserted = 1
             }
-            print
+            
         }
     ' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
 }
