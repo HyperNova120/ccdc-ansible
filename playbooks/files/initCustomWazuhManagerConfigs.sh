@@ -1,3 +1,5 @@
+#!/bin/bash
+
 insert_block_before_line() {
   local block="$1"
   local search="$2"
