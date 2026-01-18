@@ -8,12 +8,30 @@ insert_block_before_line() {
   awk -v block="$block" -v search="$search" '
         BEGIN { inserted = 0 }
         {
-            print
+            
             if (!inserted && $0 ~ search) {
                 print block
                 inserted = 1
             }
+            print
+        }
+    ' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
+}
+
+insert_block_after_line() {
+  local block="$1"
+  local search="$2"
+  local file="$3"
+
+  awk -v block="$block" -v search="$search" '
+        BEGIN { inserted = 0 }
+        {
             
+            if (!inserted && $0 ~ search) {
+                print block
+                inserted = 1
+            }
+            print
         }
     ' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
 }
@@ -49,7 +67,7 @@ EOF
 )
 CONF_SEARCH="</ossec_config>"
 
-insert_block_before_line "$LOCAL_RULE_BLOCK" "$LOCAL_RULE_SEARCH" "$LOCAL_RULE_FILE"
+insert_block_after_line "$LOCAL_RULE_BLOCK" "$LOCAL_RULE_SEARCH" "$LOCAL_RULE_FILE"
 insert_block_before_line "$CONF_BLOCK" "$CONF_SEARCH" "$CONF"
 
 #Enable Archive/All Logs
