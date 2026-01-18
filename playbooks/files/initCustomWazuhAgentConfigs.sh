@@ -1,14 +1,13 @@
 insert_block_before_line() {
-    local block="$1"
-    local search="$2"
-    local file="$3"
+  local block="$1"
+  local search="$2"
+  local file="$3"
 
-    if grep -FzZq "$block" "$file"; then
-        echo "Block already exists in $file. Skipping."
-        return 0 
-    fi
+  if awk -v RS="" search="$block" '$0 ~ search {exit 1}' <<<"$file"; then
+    return 1
+  fi
 
-    awk -v block="$block" -v search="$search" '
+  awk -v block="$block" -v search="$search" '
         BEGIN { inserted = 0 }
         {
             if (!inserted && $0 ~ search) {
@@ -17,7 +16,7 @@ insert_block_before_line() {
             }
             print
         }
-    ' "$file" > "${file}.tmp" && mv "${file}.tmp" "$file"
+    ' "$file" >"${file}.tmp" && mv "${file}.tmp" "$file"
 }
 
 CONF="/var/ossec/etc/ossec.conf"
