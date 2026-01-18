@@ -25,13 +25,16 @@ insert_block_before_line() {
 LOCAL_RULE_FILE="/var/ossec/etc/rules/local_rules.xml"
 CONF="/var/ossec/etc/ossec.conf"
 
-LOCAL_RULE_BLOCK="  <rule id="100002" level="6">
+LOCAL_RULE_BLOCK=$(
+  cat <<'EOF'
+  <rule id="100002" level="6">
     <if_sid>5715</if_sid>
     <srcip negate="yes">192.168.0.0/16</srcip>
     <description>sshd: authentication sucess from non local ip</description>
     <group>ssh_success,authentication_success,</group>
   </rule>
-"
+EOF
+)
 LOCAL_RULE_SEARCH="</group>"
 
 CONF_BLOCK=$(
