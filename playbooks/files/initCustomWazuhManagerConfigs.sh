@@ -31,7 +31,7 @@ LOCAL_RULE_BLOCK=$(
   </rule>
 EOF
 )
-LOCAL_RULE_SEARCH="</group>"
+LOCAL_RULE_SEARCH="<group"
 
 CONF_BLOCK=$(
   cat <<'EOF'
