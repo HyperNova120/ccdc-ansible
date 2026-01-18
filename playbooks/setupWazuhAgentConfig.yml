@@ -16,13 +16,14 @@
 
     - name: Copy block-ssh to agent
       ansible.builtin.copy:
-        src:  files/block-ssh.sh
+        src: files/block-ssh.sh
         dest: /var/ossec/active-response/bin/block-ssh.sh
         mode: "0750"
         owner: root
         group: wazuh
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
+
 
     - name: Run config Script
       ansible.builtin.script: files/initCustomWazuhAgentConfigs.sh
@@ -35,3 +36,8 @@
         state: restarted
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
+      register: script_output
+
+    - name: Display script_output
+      debug:
+        msg: "{{ script_output.stdout }}"
