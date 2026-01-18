@@ -39,5 +39,5 @@
         - "'wazuh-manager' not in ansible_facts.packages"
 
     - name: Display script_output
-      dnsible.builtin.debug:
+      ansible.builtin.debug:
         msg: "{{ script_output.stdout }}"
