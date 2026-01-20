@@ -71,7 +71,7 @@ CONF="/var/ossec/etc/ossec.conf"
 
 LOCAL_RULE_BLOCK=$(
   cat <<'EOF'
-  <rule id="100002" level="6">
+  <rule id="1000002" level="6">
     <if_group>authentication_success</if_group>
     <srcip negate="yes">192.168.0.0/16</srcip>
     <description>sshd: authentication sucess from non local ip</description>
@@ -91,7 +91,7 @@ CONF_BLOCK=$(
   <active-response>
     <command>block-ssh</command>
     <location>local</location>
-    <rules_id>100002</rules_id>
+    <rules_id>1000002</rules_id>
   </active-response>
 EOF
 )
