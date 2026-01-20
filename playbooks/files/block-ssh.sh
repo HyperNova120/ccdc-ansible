@@ -33,7 +33,7 @@ while IFS= read -r pts; do
     kill "$line"
     #add blocked action to log
     echo "$(date '+%Y/%m/%d %H:%M:%S') | $SRCIP" >> "$BLOCKED_LOG_FILE"
-done < <(who | grep -w "$SRCIP" | awk '{print $3}' | grep '^pts/')
+done < <(who | grep -oE 'pts/[0-9]+')
 
 
 
