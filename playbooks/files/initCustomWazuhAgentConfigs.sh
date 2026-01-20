@@ -5,10 +5,11 @@ insert_block_before_line() {
   local search="$2"
   local file="$3"
 
-  if grep -Fq -- "$block" "$file"; then
+  if grep -Fzq -- "$(printf "%s" "$block")" "$file"; then
     echo "Duplicate Found"
     return
   fi
+
 
 
 
