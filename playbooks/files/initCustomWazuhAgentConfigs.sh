@@ -46,7 +46,7 @@ CONF_BLOCK=$(
   <active-response>
     <command>block-ssh</command>
     <location>local</location>
-    <rules_id>1000002</rules_id>
+    <rules_id>190002</rules_id>
   </active-response>
 EOF
 )
