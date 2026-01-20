@@ -72,7 +72,7 @@ CONF="/var/ossec/etc/ossec.conf"
 LOCAL_RULE_BLOCK=$(
   cat <<'EOF'
   <rule id="100002" level="6">
-    <if_sid>5715</if_sid>
+    <if_group>authentication_success</if_group>
     <srcip negate="yes">192.168.0.0/16</srcip>
     <description>sshd: authentication sucess from non local ip</description>
     <group>ssh_success,authentication_success,</group>
