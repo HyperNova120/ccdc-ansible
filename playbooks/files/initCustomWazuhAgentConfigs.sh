@@ -9,7 +9,7 @@ insert_block_before_line() {
     BEGIN { RS=""; FS="\n" }
     $0 == search_block { found=1 }
     END { exit !found }
-  ' test.xml; then
+  ' "$file"; then
     echo "Duplicate Found"
     return
   fi
