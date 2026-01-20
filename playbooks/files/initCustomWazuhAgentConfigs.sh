@@ -5,10 +5,19 @@ insert_block_before_line() {
   local search="$2"
   local file="$3"
 
-  if grep -Fzq -- "$(printf "%s" "$block")" "$file"; then
+if awk -v block="$block" '
+    BEGIN { found=0 }
+    {
+        file = file $0 "\n"
+    }
+    END {
+        if (index(file, block) > 0) found=1
+        exit !found
+    }
+' "$file"; then
     echo "Duplicate Found"
     return
-  fi
+fi
 
 
 
