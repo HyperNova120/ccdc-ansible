@@ -15,29 +15,21 @@ echo "Source IP: $SRCIP" >> "$LOG_FILE"
 
 sleep "$WAITTIME"
 
-# Find all sshd or sshd-session PIDs associated with this IP
-PIDS=$(ss -tnp | awk -v ip="$SRCIP" '
-    /ESTAB/ && $0 ~ ip {
-        while (match($0, /pid=([0-9]+)/, m)) {
-            print m[1]
-            $0 = substr($0, RSTART + RLENGTH)
-        }
-    }
-')
+# Loop through all pts sessions
+while IFS= read -r pts; do
+    echo "Checking $pts" >> "$LOG_FILE"
 
-if [ -z "$PIDS" ]; then
-    echo "No SSH sessions found for $SRCIP" >> "$LOG_FILE"
-else
-    for pid in $PIDS; do
-        if [[ "$pid" =~ ^[0-9]+$ ]]; then
-            echo "Killing SSH PID $pid for $SRCIP" >> "$LOG_FILE"
-            kill "$pid"
-            echo "$(date '+%Y/%m/%d %H:%M:%S') | $SRCIP" >> "$BLOCKED_LOG_FILE"
-        else
-            echo "Invalid PID detected: $pid" >> "$LOG_FILE"
-        fi
-    done
-fi
+    pid=$(ps aux | grep "$pts" | grep @ | grep -v grep | awk '{print $2}')
+
+    if [[ "$pid" =~ ^[0-9]+$ ]]; then
+        echo "Killing SSH PID $pid for $SRCIP" >> "$LOG_FILE"
+        kill "$pid"
+        echo "$(date '+%Y/%m/%d %H:%M:%S') | $SRCIP" >> "$BLOCKED_LOG_FILE"
+    else
+        echo "No valid PID found for $pts" >> "$LOG_FILE"
+    fi
+
+done < <(who | grep -oE 'pts/[0-9]+')
 
 # Required Wazuh AR response
 echo '{"version":1,"origin":{"name":"block-ssh","module":"active-response"},"command":"delete"}'
