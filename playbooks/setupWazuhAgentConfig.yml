@@ -21,8 +21,6 @@
         mode: "0750"
         owner: root
         group: wazuh
-      when:
-        - "'wazuh-manager' not in ansible_facts.packages"
 
 
     - name: Run config Script
@@ -37,6 +35,19 @@
         state: restarted
       when:
         - "'wazuh-manager' not in ansible_facts.packages"
+
+    - name: Run manager config Script
+      ansible.builtin.script: files/initCustomWazuhManagerConfigs.sh
+      when:
+        - "'wazuh-manager' in ansible_facts.packages"
+      register: script_output
+
+      - name: Restart Wazuh-manager
+      ansible.builtin.service:
+        name: wazuh-manager
+        state: restarted
+      when:
+        - "'wazuh-manager' in ansible_facts.packages"
 
     - name: Display script_output
       ansible.builtin.debug:
