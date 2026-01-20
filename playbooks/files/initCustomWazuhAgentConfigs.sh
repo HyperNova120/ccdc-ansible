@@ -46,3 +46,13 @@ EOF
 CONF_SEARCH='</ossec_config>'
 
 insert_block_before_line "$CONF_BLOCK" "$CONF_SEARCH" "$CONF"
+
+CONF_BLOCK=$(
+  cat <<'EOF'
+  <wodle name="docker-listener">
+    <disabled>no</disabled>
+  </wodle>
+EOF
+)
+
+insert_block_before_line "$CONF_BLOCK" "$CONF_SEARCH" "$CONF"
